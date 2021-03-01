@@ -2,15 +2,15 @@
 <html>
 	<head>
 		<title>NodeChat</title>
+		<script src="/socket.io/socket.io.js"></script>
 		<script>
-		    var HOST = location.origin.replace(/^http/, 'ws');
-		    var ws = new WebSocket(HOST);
-		    var el;
-		    
-		    ws.onmessage = function (event) {
-		        el = document.getElementById('server-time');
-		        el.innerHTML = 'Server time: ' + event.data;
-		    }
+            var socket = io();
+            var el;
+            
+            socket.on('time', function(timeString) {
+                el = document.getElementById('server-time');
+                el.innerHTML = 'Server time: ' + timeString;
+            });
 		</script>
 	</head>
 	<body>
