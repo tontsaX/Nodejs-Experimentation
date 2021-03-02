@@ -42,6 +42,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const expressEjsLayout = require('express-ejs-layouts');
 
+const flash = require('connect-flash');
+const session = require('express-session');
+
 // mongoose
 mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => console.log('connected to mongo'))
@@ -49,7 +52,6 @@ mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedT
 
 // EJS
 app.use(expressEjsLayout);
-app.use(express.static('routes'));
 
 // BodyParser
 app.use(express.urlencoded({extended: false}));
