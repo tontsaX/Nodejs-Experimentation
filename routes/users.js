@@ -65,7 +65,7 @@ router.post('/register', (req, res) => {
                     newUser.save()
                     .then((value)=>{
                         console.log(value)
-                    res.redirect('/users/login');
+                    res.redirect('logintuto/users/login');
                     })
                     .catch(value=> console.log(value));
                       
