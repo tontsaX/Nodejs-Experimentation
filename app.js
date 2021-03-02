@@ -49,10 +49,11 @@ mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedT
 
 // EJS
 app.use(expressEjsLayout);
+app.use(express.static('routes'));
 
 // BodyParser
 app.use(express.urlencoded({extended: false}));
 
 // Routes
-app.use('/welcome', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use('/logintuto', require('./routes/index.js'));
+app.use('/logintuto/users', require('./routes/users'));

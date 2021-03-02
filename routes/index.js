@@ -4,7 +4,7 @@ const router = express.Router();
 // login page
 /* when client calls address /welcome, the server renders
 welcome.ejs page */
-router.get('/welcome', (req,res) => {
+router.get('/', (req,res) => {
     res.render('welcome');
 });
 

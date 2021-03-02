@@ -7,7 +7,7 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/register', (req, res) => {
-    res.render('register');s
+    res.render('register');
 });
 
 // Register handle
