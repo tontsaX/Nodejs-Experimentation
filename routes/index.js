@@ -13,5 +13,9 @@ router.get('/register', (req,res) => {
     res.render('register');
 });
 
+router.get('/logintuto/dashboard', (req, res) => {
+    res.render('dashboard');
+});
+
 // Export the router instance so that it can be used in other files.
 module.exports = router;
