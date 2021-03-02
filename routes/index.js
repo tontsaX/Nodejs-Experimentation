@@ -13,8 +13,10 @@ router.get('/register', (req,res) => {
     res.render('register');
 });
 
-router.get('/logintuto/dashboard', (req, res) => {
-    res.render('dashboard');
+router.get('/dashboard', (req, res) => {
+    res.render('dashboard', {
+        user: req.user
+    });
 });
 
 // Export the router instance so that it can be used in other files.
