@@ -44,7 +44,7 @@ const expressEjsLayout = require('express-ejs-layouts');
 
 // mongoose
 mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => console.log('connected,,'))
+.then(() => console.log('connected to mongo'))
 .catch((err) => console.log(err));
 
 // EJS
