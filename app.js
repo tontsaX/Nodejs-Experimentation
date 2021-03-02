@@ -3,6 +3,7 @@ const express = require('express')
 const socketio = require('socket.io')
 const app = express()
 
+// EJS
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
@@ -35,3 +36,23 @@ io.on('connection', socket => {
         socket.broadcast.emit('typing', {username: socket.username});
     });
 })
+
+// login tuto
+const router = express.Router();
+const mongoose = require('mongoose');
+const expressEjsLayout = require('express-ejs-layouts');
+
+// mongoose
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => console.log('connected,,'))
+.catch((err) => console.log(err));
+
+// EJS
+app.use(expressEjsLayout);
+
+// BodyParser
+app.use(express.urlencoded({extended: false}));
+
+// Routes
+app.use('/welcome', require('./routes/index'));
+app.use('/users', require('./routes/users'));
