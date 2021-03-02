@@ -57,5 +57,5 @@ app.use(expressEjsLayout);
 app.use(express.urlencoded({extended: false}));
 
 // Routes
-app.use('/logintuto', require('./routes/index.js'));
+app.use('/logintuto', require('./routes/index'));
 app.use('/logintuto/users', require('./routes/users'));
