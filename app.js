@@ -45,6 +45,9 @@ const expressEjsLayout = require('express-ejs-layouts');
 const flash = require('connect-flash');
 const session = require('express-session');
 
+const passport = require('passport');
+require("./config/passport")(passport)
+
 // mongoose
 mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => console.log('connected to mongo'))
@@ -62,6 +65,9 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // flash-message stuff, not to be confused with the browser flash thing
 // use flash
