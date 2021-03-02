@@ -23,8 +23,8 @@ module.exports = function(passport) {
                 }) // bcrypt.compare end
             }) // .then end
             .catch((err) => {console.log(err)})
-        });
-    );
+        }));
+        
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
