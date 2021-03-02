@@ -78,6 +78,11 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/logintuto/dashboard',
+        failureRedirect: '/logintuto/users/login',
+        failureFlash: true,
+    })(req,res,next);
 });
 
 // logout
