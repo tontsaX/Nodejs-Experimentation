@@ -3,13 +3,27 @@ const express = require('express')
 const socketio = require('socket.io')
 const app = express()
 
+const flash = require('connect-flash');
+const session = require('express-session');
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(flash());
+const {ensureAuthenticated} = require("./config/auth");
+
 // EJS
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
+app.get('/', ensureAuthenticated, (req, res) => {
     res.render('index')
-})
+});
+
+//app.use('/', (req, res) => {
+//    res.render('index')
+//})
 
 const server = app.listen(process.env.PORT || 3000, () => console.log("server is running"))
 
@@ -41,10 +55,6 @@ io.on('connection', socket => {
 const router = express.Router();
 const mongoose = require('mongoose');
 const expressEjsLayout = require('express-ejs-layouts');
-
-const flash = require('connect-flash');
-const session = require('express-session');
-
 const passport = require('passport');
 require("./config/passport")(passport)
 
@@ -63,18 +73,18 @@ app.use(expressEjsLayout);
 app.use(express.urlencoded({extended: false}));
 
 // express session
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
+//app.use(session({
+//    secret: 'secret',
+//    resave: true,
+//    saveUninitialized: true
+//}));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 // flash-message stuff, not to be confused with the browser flash thing
 // use flash
-app.use(flash());
+//app.use(flash());
 app.use((req,res,next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
