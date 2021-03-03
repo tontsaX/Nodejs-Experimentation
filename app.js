@@ -5,11 +5,13 @@ const app = express()
 
 const flash = require('connect-flash');
 const session = require('express-session');
+
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
+
 app.use(flash());
 const {ensureAuthenticated} = require("./config/auth");
 
@@ -52,9 +54,10 @@ io.on('connection', socket => {
 })
 
 // login tuto
-const router = express.Router();
+//const router = express.Router();
 const mongoose = require('mongoose');
 const expressEjsLayout = require('express-ejs-layouts');
+
 const passport = require('passport');
 require("./config/passport")(passport)
 
