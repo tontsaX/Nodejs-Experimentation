@@ -49,7 +49,10 @@ const passport = require('passport');
 require("./config/passport")(passport)
 
 // mongoose
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true})
+// mongodb:ssä näkyvä tietokanta, jossa users taulu löytyy on nimeltään 'logintuto'
+// kun mongoose ottaa yhteyden mongoon, niin mongo luo lokaalin tietokannan 'logintuto'
+// jos sellaista ei vielä ole
+mongoose.connect('mongodb://localhost/logintuto', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => console.log('connected to mongo'))
 .catch((err) => console.log(err));
 
