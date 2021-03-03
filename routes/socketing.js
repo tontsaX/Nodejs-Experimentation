@@ -7,9 +7,7 @@ router.get('/', ensureAuthenticated, (req, res) => {
     res.render('index')
 });
 
-//const server = express().listen(process.env.PORT || 3000, () => console.log("server is running"))
 const serverExport = require('../config/server');
-//const io = socketio(require('../config/server'))
 const io = socketio(serverExport.server);
 
 io.on('connection', socket => {

@@ -1,66 +1,15 @@
-// express configuration
 const express = require('express');
-//const socketio = require('socket.io');
-//const app = express();
 const appExport = require('./config/server');
 const app = appExport.app;
 
-const flash = require('connect-flash');
-const session = require('express-session');
-
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-
-app.use(flash());
-const {ensureAuthenticated} = require("./config/auth");
-
-// EJS
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
-//app.use(require('./config/server'))
-
-//app.get('/', ensureAuthenticated, (req, res) => {
-//    res.render('index')
-//});
-
-//app.use('/', require('./routes/socketing'));
-
-//const server = app.listen(process.env.PORT || 3000, () => console.log("server is running"))
-//module.exports = server;
-// initialize socket for the server
-//const io = socketio(server)
-//
-//io.on('connection', socket => {
-//    console.log("New user connected.")
-//    
-//    socket.username = "Anonymous"
-//    
-//    socket.on('change_username', data => {
-//        socket.username = data.username
-//    })
-//    
-//    // handle the new message event
-//    socket.on('new_message', data => {
-//        console.log("new message");
-//        io.sockets.emit('receive_message', {message: data.message, username: socket.username});
-//    });
-//    
-//    socket.on('typing', data => {
-//        /*"When we use broadcast, every user except the one who is typing the message receives the typing event from the server."*/
-//        socket.broadcast.emit('typing', {username: socket.username});
-//    });
-//})
-
 // login tuto
-//const router = express.Router();
 const mongoose = require('mongoose');
 const expressEjsLayout = require('express-ejs-layouts');
-const router = express.Router();
 const passport = require('passport');
 require("./config/passport")(passport)
+
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // mongoose
 // mongodb:ssä näkyvä tietokanta, jossa users taulu löytyy on nimeltään 'logintuto'
@@ -71,24 +20,27 @@ mongoose.connect('mongodb://localhost/logintuto', {useNewUrlParser: true, useUni
 .catch((err) => console.log(err));
 
 // EJS
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
 app.use(expressEjsLayout);
 
 // BodyParser
 app.use(express.urlencoded({extended: false}));
 
 // express session
-//app.use(session({
-//    secret: 'secret',
-//    resave: true,
-//    saveUninitialized: true
-//}));
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
 
+// Authentication system
 app.use(passport.initialize());
 app.use(passport.session());
 
 // flash-message stuff, not to be confused with the browser flash thing
 // use flash
-//app.use(flash());
+app.use(flash());
 app.use((req,res,next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
