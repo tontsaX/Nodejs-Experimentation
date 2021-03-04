@@ -3,7 +3,8 @@ const appExport = require('./config/server');
 const app = appExport.app;
 
 // login tuto
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+const { Sequelize } = require('sequelize');
 const expressEjsLayout = require('express-ejs-layouts');
 const passport = require('passport');
 require("./config/passport")(passport)
@@ -15,9 +16,28 @@ const session = require('express-session');
 // mongodb:ssä näkyvä tietokanta, jossa users taulu löytyy on nimeltään 'logintuto'
 // kun mongoose ottaa yhteyden mongoon, niin mongo luo lokaalin tietokannan 'logintuto'
 // jos sellaista ei vielä ole
-mongoose.connect('mongodb://localhost/logintuto', {useNewUrlParser: true, useUnifiedTopology: true})
+/*mongoose.connect('mongodb://localhost/logintuto', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => console.log('connected to mongo'))
-.catch((err) => console.log(err));
+.catch((err) => console.log(err));*/
+
+// initialize sequelize
+//const sequelize = new Sequelize('postgres://doka:Polttavaongelma7@localhost/seqTuto');
+
+const sequelize = new Sequelize('postgreTest','doka','', {
+    host: 'localhost',
+    dialect: 'postgres'
+});
+
+// test the connection
+testDb();
+async function testDb() {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch(error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
 
 // EJS
 app.set('view engine', 'ejs')
