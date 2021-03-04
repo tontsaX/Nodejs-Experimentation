@@ -23,7 +23,7 @@ const session = require('express-session');
 // initialize sequelize
 //const sequelize = new Sequelize('postgres://doka:Polttavaongelma7@localhost/seqTuto');
 
-const sequelize = new Sequelize('postgreTest','doka','', {
+const sequelize = new Sequelize('postgreTest','doka','Polttavaongelma7', {
     host: 'localhost',
     dialect: 'postgres'
 });
