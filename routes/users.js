@@ -51,25 +51,24 @@ router.post('/register', (req, res) => {
         });
     } else {
         // validation passed
-        
+        var user = {};
         // kryptataan salasana ja samalla tallennetaan käyttäjä
         bcrypt.genSalt(10,(err,salt)=> 
-                bcrypt.hash(newUser.password,salt,
+                bcrypt.hash(password,salt,
                 (err,hash)=> {
                     if(err) throw err;
-                    // tee tietokantaan tallennus täällä
-                    //save pass to hash
-                    newUser.password = hash;
-                    //save user
-                    newUser.save()
+                        user = await User.create({
+                            username: name,
+                            email: email,
+                            password: hash
+                        });
                     .then((value)=>{
                         console.log(value);
                         req.flash('success_msg','You have now registered!');
                         res.redirect('/logintuto/users/login');
                     })
                     .catch(value=> console.log(value));                      
-        }));  
-        
+        }));
     } // validation passed ends here
 });
 
