@@ -8,10 +8,18 @@ module.exports = function(passport) {
         passwordField: 'password'
     },
     async function(email, password, done) {
-        var user = await User.findOne({ where: {email:email} });
+        var user = await User.findOne({ where: {email: email} });
         if(user == null || !user.validPassword(password)) {
             return done(null, false, {message: 'Incorrect email or password.'});
         }
         return done(null, user);
     }));
+    
+    passport.serializeUser((user, done)=> {
+        done(null, user);
+    });
+    
+    passport.deserializeUser((user, done)=>{
+        done(null, user);
+    });
 };
