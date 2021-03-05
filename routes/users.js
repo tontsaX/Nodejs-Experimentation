@@ -21,7 +21,7 @@ function isValidEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 // Register handle
-router.post('/register', (req, res) => {
+router.post('/register', async function(req, res) {
     const {name, email, password, password2} = req.body;
     let errors = [];
     //console.log(' Name ' + name + ' email: ' + email + ' pass: ' + password);
@@ -49,27 +49,19 @@ router.post('/register', (req, res) => {
             password: password,
             password2: password2
         });
-    } else {
-        // validation passed
-        var user = {};
-        // kryptataan salasana ja samalla tallennetaan käyttäjä
-        bcrypt.genSalt(10,(err,salt)=> 
-                bcrypt.hash(password,salt,
-                (err,hash)=> {
-                    if(err) throw err;
-                        user = await User.create({
-                            username: name,
-                            email: email,
-                            password: hash
-                        });
-                    .then((value)=>{
-                        console.log(value);
-                        req.flash('success_msg','You have now registered!');
-                        res.redirect('/logintuto/users/login');
-                    })
-                    .catch(value=> console.log(value));                      
-        }));
-    } // validation passed ends here
+    }
+    // validation passed
+    var hash = bcrypt.hashSync(password, 10);
+    try {
+        var user = await User.create({
+            username: name,
+            email: email,
+            password: hash
+        });
+    } catch(err) {
+        errors.push({msg: 'email already registered'});
+        res.render('register', {errors,name,email,password,password2});
+    }
 });
 
 router.post('/login', (req, res, next) => {
