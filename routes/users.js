@@ -1,7 +1,8 @@
 // ladataan user model käyttöön
 const express = require('express');
 const router = express.Router();
-const db = require('../db/models/index');
+//const db = require('../db/models/index');
+const User = require('../db/models').User;
 //const User = require("../models/user.js");
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -58,6 +59,8 @@ router.post('/register', async function(req, res) {
             email: email,
             password: hash
         });
+        req.flash('success_msg','You have now registered!');
+        res.redirect('/logintuto/users/login');
     } catch(err) {
         errors.push({msg: 'email already registered'});
         res.render('register', {errors,name,email,password,password2});
