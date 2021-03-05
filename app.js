@@ -4,8 +4,8 @@ const app = appExport.app;
 
 // login tuto
 //const mongoose = require('mongoose');
-const { Sequelize } = require('sequelize');
 const expressEjsLayout = require('express-ejs-layouts');
+
 const passport = require('passport');
 require("./config/passport")(passport)
 
@@ -19,25 +19,6 @@ const session = require('express-session');
 /*mongoose.connect('mongodb://localhost/logintuto', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => console.log('connected to mongo'))
 .catch((err) => console.log(err));*/
-
-// initialize sequelize
-//const sequelize = new Sequelize('postgres://doka:Polttavaongelma7@localhost/seqTuto');
-
-const sequelize = new Sequelize('','','', {
-    host: '',
-    dialect: 'postgres'
-});
-
-// test the connection
-testDb();
-async function testDb() {
-    try {
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-    } catch(error) {
-        console.error('Unable to connect to the database:', error);
-    }
-}
 
 // EJS
 app.set('view engine', 'ejs')
