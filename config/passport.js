@@ -7,27 +7,28 @@ module.exports = function(passport) {
         usernameField: 'email',
         passwordField: 'password'
     },
-    async function(email, password, done) {
-        // kirjautuu, mutta kirjautuu kaikilla salasanoilla
-        var user = await User.findOne({ where: {email: email} });
-        if(user == null) {
-            return done(null, false, {message: 'Incorrect email or password.'});
-        }
-        // väärällä postilla ja oikealla salasanalla password on null
-        // tämä tarkoittaa sitä, että password ja user.password viittaavat
-        // samaan arvoon
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if(err) throw err;
-                    
-            if(isMatch) {
-                return done(null, user);
+        async function(email, password, done) {
+            // kirjautuu, mutta kirjautuu kaikilla salasanoilla
+            var user = await User.findOne({ where: {email: email} });
+            var errMsg = "Incorrect email or password.";
+            
+            if(user === null) {
+                return done(null, false, {message: errMsg});
             } else {
-                return done(null, false, {message: 'Incorrect email or password.'});
+            
+                bcrypt.compare(password, user.password, (err, isMatch) => {
+                    if(err) throw err;
+                            
+                    if(isMatch) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false, {message: errMsg});
+                    }
+                }); 
+                
             }
-        }) 
-
-        return done(null, user);
-    }));
+        })   
+    ); // end of passport.use
     
     passport.serializeUser((user, done)=> {
         done(null, user);
