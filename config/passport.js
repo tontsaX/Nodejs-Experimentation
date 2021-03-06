@@ -8,10 +8,24 @@ module.exports = function(passport) {
         passwordField: 'password'
     },
     async function(email, password, done) {
+        // kirjautuu, mutta kirjautuu kaikilla salasanoilla
         var user = await User.findOne({ where: {email: email} });
-        if(user == null || !user.validPassword(password)) {
+        if(user == null) {
             return done(null, false, {message: 'Incorrect email or password.'});
         }
+        // väärällä postilla ja oikealla salasanalla password on null
+        // tämä tarkoittaa sitä, että password ja user.password viittaavat
+        // samaan arvoon
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if(err) throw err;
+                    
+            if(isMatch) {
+                return done(null, user);
+            } else {
+                return done(null, false, {message: 'Incorrect email or password.'});
+            }
+        }) 
+
         return done(null, user);
     }));
     
