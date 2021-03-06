@@ -1,24 +1,13 @@
 const express = require('express');
+const expressEjsLayout = require('express-ejs-layouts');
 const appExport = require('./config/server');
 const app = appExport.app;
-
-// login tuto
-//const mongoose = require('mongoose');
-const expressEjsLayout = require('express-ejs-layouts');
 
 const passport = require('passport');
 require("./config/passport")(passport)
 
 const flash = require('connect-flash');
 const session = require('express-session');
-
-// mongoose
-// mongodb:ssä näkyvä tietokanta, jossa users taulu löytyy on nimeltään 'logintuto'
-// kun mongoose ottaa yhteyden mongoon, niin mongo luo lokaalin tietokannan 'logintuto'
-// jos sellaista ei vielä ole
-/*mongoose.connect('mongodb://localhost/logintuto', {useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => console.log('connected to mongo'))
-.catch((err) => console.log(err));*/
 
 // EJS
 app.set('view engine', 'ejs')
@@ -28,7 +17,7 @@ app.use(expressEjsLayout);
 // BodyParser
 app.use(express.urlencoded({extended: false}));
 
-// express session
+// setting up express session
 app.use(session({
     secret: 'secret',
     resave: true,
@@ -40,7 +29,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // flash-message stuff, not to be confused with the browser flash thing
-// use flash
 app.use(flash());
 app.use((req,res,next) => {
     res.locals.success_msg = req.flash('success_msg');
