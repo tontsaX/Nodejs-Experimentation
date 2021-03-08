@@ -50,20 +50,27 @@ router.post('/register', async function(req, res) {
             password: password,
             password2: password2
         });
-    }
-    // validation passed
-    var hash = bcrypt.hashSync(password, 10);
-    try {
-        var user = await User.create({
-            username: name,
-            email: email,
-            password: hash
-        });
-        req.flash('success_msg','You have now registered!');
-        res.redirect('/logintuto/users/login');
-    } catch(err) {
-        errors.push({msg: 'email already registered'});
-        res.render('register', {errors,name,email,password,password2});
+    } else { // validation passed
+        var user = User.findOne({ where: {email: email}});
+        
+        if(user) {
+            errors.push({msg: "Email already exists."});
+            res.render('register', {errors,name,email,password,password2});
+        } else{
+            try {
+                var hash = bcrypt.hashSync(password, 10);
+                user = await User.create({
+                    userName: name,
+                    email: email,
+                    password: hash
+                });
+                req.flash('success_msg','You have now registered!');
+                res.redirect('/logintuto/users/login');
+            } catch(err) {
+                errors.push({msg: "Something happened. Couldn't register."});
+                res.render('register', {errors,name,email,password,password2});
+            }
+        }
     }
 });
 
@@ -73,6 +80,7 @@ router.post('/login', (req, res, next) => {
         failureRedirect: '/logintuto/users/login',
         failureFlash: true,
     })(req,res,next);
+    //console.log(user);
 });
 
 // logout
