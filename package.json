@@ -17,6 +17,7 @@
     "bcrypt": "^5.0.1",
     "bufferutil": "^4.0.3",
     "connect-flash": "^0.1.1",
+    "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
@@ -27,6 +28,10 @@
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.5.0",
+<<<<<<< HEAD
+=======
+    "sequelize-cli": "^6.2.0",
+>>>>>>> postgre
     "socket.io": "^3.1.2",
     "utf-8-validate": "^5.0.4",
     "ws": "^7.4.3"
