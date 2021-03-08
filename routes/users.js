@@ -6,6 +6,7 @@ const User = require('../db/models').User;
 //const User = require("../models/user.js");
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const {ensureAuthenticated} = require("../config/auth");
 
 // login handle
 router.get('/login', (req, res) => {
@@ -83,10 +84,24 @@ router.post('/login', (req, res, next) => {
     //console.log(user);
 });
 
-// logout
+// logoutensureAuthenticated
 router.get('/logout', (req, res) => {
     req.logout();
-    req.flash('success_msg', 'Now logged out');
+    req.flash('success_msg', "You've successfully logged out.");
+    res.redirect('/logintuto/users/login');
+});
+
+// delete account
+router.get('/dashboard/:email', ensureAuthenticated, async function(req, res) {
+    try {
+        // ei suorita
+        // ei näin parametreihin käsiksi vaan req.params.muuttuja
+        await User.destroy({ where: {email: req.email} });
+        req.flash('success_msg', 'Account deleted.');
+    } catch(err) {
+        console.log('Resource not deleted.')
+        req.logout();
+    }
     res.redirect('/logintuto/users/login');
 });
 
