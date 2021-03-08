@@ -51,9 +51,9 @@ router.post('/register', async function(req, res) {
             password2: password2
         });
     } else { // validation passed
-        var user = User.findOne({ where: {email: email}});
+        var userExists = User.findOne({ where: {email: email}});
         
-        if(user) {
+        if(userExists) {
             errors.push({msg: "Email already exists."});
             res.render('register', {errors,name,email,password,password2});
         } else{
