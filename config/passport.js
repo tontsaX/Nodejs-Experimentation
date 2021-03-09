@@ -8,7 +8,6 @@ module.exports = function(passport) {
         passwordField: 'password'
     },
         async function(email, password, done) {
-            // kirjautuu, mutta kirjautuu kaikilla salasanoilla
             var user = await User.findOne({ where: {email: email} });
             var errMsg = "Incorrect email or password.";
             

@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const {ensureAuthenticated} = require("../config/auth");
 
+var userName = "";
+
 // login handle
 router.get('/login', (req, res) => {
     res.render('login');
@@ -75,12 +77,24 @@ router.post('/register', async function(req, res) {
     }
 });
 
-router.post('/login', (req, res, next) => {
+/*router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/logintuto/dashboard',
         failureRedirect: '/logintuto/users/login',
         failureFlash: true,
     })(req,res,next);
+});*/
+
+// nyt päästään asiaan
+router.post('/login', 
+    passport.authenticate('local', {
+        //successRedirect: '/logintuto/dashboard',
+        failureRedirect: '/logintuto/users/login',
+        failureFlash: true,
+    }),
+    function(req, res){
+        console.log(req.user);
+        res.redirect('/logintuto/dashboard');
 });
 
 // logoutensureAuthenticated

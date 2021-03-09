@@ -26,7 +26,7 @@ app.use(session({
 
 // Authentication system
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session({resave: false}));
 
 // flash-message stuff, not to be confused with the browser flash thing
 app.use(flash());
