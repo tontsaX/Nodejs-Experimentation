@@ -1,14 +1,12 @@
 // ladataan user model käyttöön
 const express = require('express');
 const router = express.Router();
-//const db = require('../db/models/index');
 const User = require('../db/models').User;
-//const User = require("../models/user.js");
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const {ensureAuthenticated} = require("../config/auth");
 
-var userName = "";
+var dashboard = "";
 
 // login handle
 router.get('/login', (req, res) => {
@@ -93,8 +91,12 @@ router.post('/login',
         failureFlash: true,
     }),
     function(req, res){
-        console.log(req.user);
-        res.redirect('/logintuto/dashboard');
+        //console.log(req.user);
+        dashboard = '/' + req.user.userName +'/dashboard';
+        console.log(req.user.userName);
+        console.log(dashboard);
+        //res.redirect('/logintuto/users/${}/dashboard');
+        res.redirect('/logintuto/users' + dashboard);
 });
 
 // logoutensureAuthenticated
@@ -104,8 +106,14 @@ router.get('/logout', (req, res) => {
     res.redirect('/logintuto/users/login');
 });
 
+router.get('/:userName/dashboard', ensureAuthenticated, (req, res) => {
+    res.render('dashboard', {
+        user: req.user
+    });
+});
+
 // delete account
-router.post('/dashboard', ensureAuthenticated, async function(req, res) {
+router.post(dashboard, ensureAuthenticated, async function(req, res) {
     try {
         const {email} = req.body;
         
