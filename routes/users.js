@@ -81,7 +81,6 @@ router.post('/login', (req, res, next) => {
         failureRedirect: '/logintuto/users/login',
         failureFlash: true,
     })(req,res,next);
-    //console.log(user);
 });
 
 // logoutensureAuthenticated
