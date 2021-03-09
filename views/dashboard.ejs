@@ -1,8 +1,27 @@
 <h1>Dashboard</h1>
 <p> Welcome <%= user.userName %></p>
+
 <a href="/logintuto/users/logout">Logout</a>
 
-<!-- jää selainhistoriaan -->
-<!-- 
-<a href="/logintuto/users/dashboard/<%= user.email %>">Delete account</a>
--->
+<!-- Well deleting works now, but it might not be the safest option. -->
+<form action="/logintuto/users/dashboard" method="POST" style="display:inline;">
+    <input type="hidden" name="email" value="<%= user.email%>">
+    <input type="submit" value="Delete Account">
+</form>
+<script>
+    /*function deleteAccount() {
+        var xhttp = new XMLHttpRequest();
+        var body = {email: '<%= user.email %>'};
+        console.log(body);
+        
+        xhttp.onreadystatechange = () => {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("demo").innerHTML = xhttp.responseText;
+            }
+        }
+        
+        xhttp.open("DELETE", "/logintuto/users/dashboard", true);
+        xhttp.setRequestHeader("content-type", "application/json");
+        xhttp.send(body);
+    }*/
+</script>

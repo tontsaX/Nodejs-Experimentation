@@ -52,7 +52,7 @@ router.post('/register', async function(req, res) {
             password2: password2
         });
     } else { // validation passed
-        var userExists = User.findOne({ where: {email: email}});
+        var userExists = await User.findOne({ where: {email: email}});
         
         if(userExists) {
             errors.push({msg: "Email already exists."});
@@ -92,13 +92,15 @@ router.get('/logout', (req, res) => {
 });
 
 // delete account
-router.get('/dashboard/:email', ensureAuthenticated, async function(req, res) {
+router.post('/dashboard', ensureAuthenticated, async function(req, res) {
     try {
-        // ei suorita
-        // ei näin parametreihin käsiksi vaan req.params.muuttuja
-        await User.destroy({ where: {email: req.email} });
+        const {email} = req.body;
+        
+        await User.destroy({ where: {email: email} });
+
         req.flash('success_msg', 'Account deleted.');
     } catch(err) {
+        console.log(err);
         console.log('Resource not deleted.')
         req.logout();
     }
