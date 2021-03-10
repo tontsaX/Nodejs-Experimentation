@@ -40,4 +40,4 @@ app.use((req,res,next) => {
 // Routes
 app.use('/logintuto', require('./routes/index'));
 app.use('/logintuto/users', require('./routes/users'));
-app.use('/', require('./routes/socketing'));
+app.use('/chathall', require('./routes/socketing'));
