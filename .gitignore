@@ -1,11 +1,6 @@
 node_modules/
-<<<<<<< HEAD
 
 db/
+config/config.*
 .env
-=======
-db/migrations/
-db/seeders/
-.env
-.sequalizerc
->>>>>>> postgre
+.sequelizerc
