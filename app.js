@@ -4,14 +4,14 @@ const appExport = require('./config/server');
 const app = appExport.app;
 
 const passport = require('passport');
-require("./config/passport")(passport)
+require("./config/passport")(passport);
 
 const flash = require('connect-flash');
 const session = require('express-session');
 
 // EJS
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use(expressEjsLayout);
 
 // BodyParser
