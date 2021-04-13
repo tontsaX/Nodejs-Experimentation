@@ -7,11 +7,12 @@
     let messageList = document.querySelector('#message-list');
 
 	console.log(chatroom);
+	socket.emit('chatroom', {chatroom: chatroom});
     
     messageBtn.addEventListener('click', e => {
         console.log(message.value);
 		console.log(chatroom);
-        socket.emit('new_message', {room: chatroom, username: username, message: message.value});
+        socket.emit('new_message', {chatroom: chatroom, username: username, message: message.value});
         message.value = '';
     });
     
