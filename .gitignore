@@ -1,5 +1,7 @@
 node_modules/
 
+db/migrations/
+db/seeders/
 config/config.*
 .env
 .sequelizerc
