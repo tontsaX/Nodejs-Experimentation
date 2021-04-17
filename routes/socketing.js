@@ -22,19 +22,18 @@ function createSocketConnection(username) {
     // was io.on, but it caused message duplication problems when
     // client makes request to /chatroom-:chatName
     // works, if not used as a function
+    // any and every request to /chatroom-:chatName added a new client as
+    // the same client, which lead multiplication of messages
     io.once('connection', socket => {
         var chatroom = '';
         
         socket.on('chatroom', data => {
             socket.join(data.chatroom);
-            //console.log("Chatroom from client: " + data.chatroom);
             chatroom = data.chatroom;
         });
         
         console.log("New user connected.")
         console.log("Chatroom: " + chatroom);
-	    //console.log("Chatroom from client: " + chatroom);
-	    //console.log("Connect count: " + );kissakala
 	    console.log("=============");
         
         // message received from the client
