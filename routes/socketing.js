@@ -39,14 +39,12 @@ function createSocketConnection(username) {
         // message received from the client
         socket.on('new_message', data => {
             console.log("new message");
-		    //io.sockets.emit('receive_message', {message: data.message, username: data.username});
 		    io.to(chatroom).emit('receive_message', {message: data.message, username: data.username});
         });
         
         socket.on('typing', data => {
             /*"When we use broadcast, every user except the one who is typing the message receives the typing event from the server."*/
-            //socket.to(chatroom).emit('typing', {username: socket.username});
-            socket.to(chatroom).broadcast.emit('typing', {username: username}); // mikä on socket.username
+            socket.to(chatroom).broadcast.emit('typing', {username: username});
         });
     })
 
