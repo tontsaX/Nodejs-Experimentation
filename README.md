@@ -8,4 +8,4 @@ This project is made by merging multiple web tutorials. My idea is to make a pla
 
 Right now project's Urls are a mess, because I've been more of trying out database and login control and socket.io.
 
-In the mean while this project is constructed, you can play the old school worm game by [here.](https://ancient-caverns-95141.herokuapp.com/wormGame "My Worm Game")
+In the mean while this project is constructed, you can play the old school worm game in [here.](https://ancient-caverns-95141.herokuapp.com/wormGame "My Worm Game")
