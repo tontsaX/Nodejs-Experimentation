@@ -41,3 +41,4 @@ app.use((req,res,next) => {
 app.use('/logintuto', require('./routes/index'));
 app.use('/logintuto/users', require('./routes/users'));
 app.use('/chathall', require('./routes/socketing'));
+app.use('/wormGame', require('./routes/wormGame'));
