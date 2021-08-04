@@ -1,7 +1,8 @@
 // ladataan user model käyttöön
 const express = require('express');
 const router = express.Router();
-const User = require('../db/models').User;
+//const User = require('../db/models').User;
+const GameOfUr = require('../db/models').GameOfUr;
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const {ensureAuthenticated} = require("../config/auth");
@@ -15,16 +16,10 @@ router.get('/register', (req, res) => {
     res.render('register');
 });
 
-// uses a regex to check if email is valid
-function isValidEmail(email) {
-    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
 // Register handle
 router.post('/register', async function(req, res) {
     const {name, email, password, password2} = req.body;
     let errors = [];
-    //console.log(' Name ' + name + ' email: ' + email + ' pass: ' + password);
     
     if(!name || !email || !password || !password2) {
         errors.push({msg: "Please fill in all fields."});
@@ -79,9 +74,10 @@ router.post('/login',
         failureFlash: true,
     }),
     function(req, res){
-        dashboard = '/' + req.user.userName +'/dashboard';
+        dashboard = '/' + req.user.name +'/dashboard';
         res.redirect('/logintuto/users' + dashboard);
-});
+	}
+);
 
 // logoutensureAuthenticated
 router.get('/logout', (req, res) => {

@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {ensureAuthenticated} = require("../config/auth.js");
 
-// login page
 /* when client calls address /welcome, the server renders
 welcome.ejs page */
 router.get('/', (req,res) => {
