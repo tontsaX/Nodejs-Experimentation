@@ -31,7 +31,8 @@ router.post('/register', async function(req, res) {
 		let gameExists = await GameOfUr.findOne({ where: { passCode: email } });
 
 		if (gameExists) {
-			// ohjaa takaisin rekisteröinti-sivulle
+			// ohjaa takaisin rekisteröinti-sivulle ja kerro, että koodi täytyy luoda uudestaan
+			res.render('register');
 		}
 		else {
 			
