@@ -1,45 +1,10 @@
-<h1>Register</h1>
-<%- include('./partials/messages') %>
+<h1>Start A Game of Ur</h1>
+<p>Press the 'Generate gamecode' button to create a new game of Game of Ur and share the code with your friend.
+<br>There can be two players in one game.</p>
+<!-- <%- include('./partials/messages') %> -->
 <form action="/logintuto/users/register" method="POST">
-<div>
-    <label for="name">Name</label>
-    <input
-      type="name"
-      name="name"
-      placeholder="Enter Name"
-      value="<%= typeof name != 'undefined' ? name : '' %>"
-    />
-  
-</div>
-<div>
-    <label for="email">Email</label>
-    <input
-      type="email"
-      name="email"
-      placeholder="Enter Email"
-      value="<%= typeof email != 'undefined' ? email : '' %>"
-    />
-  </div>
-  <div >
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      placeholder="Create Password"
-      value="<%= typeof password != 'undefined' ? password : '' %>"
-    />
-  </div>
-  <div >
-    <label for="password2">Confirm Password</label>
-    <input
-      type="password"
-      name="password2"
-      placeholder="Confirm Password"
-      value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
-    />
-  </div>
-  <button type="submit" class="btn btn-primary btn-block">
-    Register
-  </button>
-  </form>
-  <p>Have An Account? <a href="/logintuto/users/login">Login</a></p>
+	<button type="Submit">Generate gamecode</button>
+</form>
+<!-- Piilota tämä ja näytä, kun pelikoodi on luotu. -->
+<p>Your gamecode is gamecode.<a href="pelin osoite">Start the game.</a></p>
+<p>Already have a code? <a href="login osoite">Join the game.</a></p>
