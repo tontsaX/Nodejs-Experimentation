@@ -24,31 +24,32 @@ router.get('/register', (req, res) => {
 // Register handle
 router.post('/register', async function(req, res) {
 	//	const { name, email, password, password2 } = req.body;
-	//	let errors = [];
+	const { gamecode } = req.body;
+	let errors = [];
 
 	try {
-		let gameCode = bcypt.hashSync("GameofUr", 10);
+		let gameCode = bcrypt.hashSync("GameofUr", 10);
 		let gameExists = await GameOfUr.findOne({ where: { passCode: gameCode } });
+
+		console.log("Gamecode: " + gameCode);
 
 		if (gameExists) {
 			// ohjaa takaisin rekisteröinti-sivulle ja kerro, että koodi täytyy luoda uudestaan
 			errors.push({ msg: "Couldn't generate gamecode. Please try again." });
-			res.render('register', { errors } );
+			res.render('register', { errors });
 		}
 		else {
+			user = await GameOfUr.create({
+				passCode: gameCode,
+				players: 1
+			});
 
-			req.flash('success_msg', 'You have now registered!');
-			//			res.redirect('/logintuto/users/register');
-			res.render('register', { gamecode: gamecode });
+			req.flash('success_msg', 'Your game has been created!');
+			res.render('register', { gamecode: gameCode });
 		}
-		//		var hash = bcrypt.hashSync(password, 10);
-		//		user = await User.create({
-		//			userName: name,
-		//			email: email,
-		//			password: hash
-		//		});
 	} catch (err) {
 		errors.push({ msg: "Something happened. Couldn't generate gamecode." });
+		console.log(err);
 		res.render('register', { errors });
 	}
 });
@@ -59,26 +60,28 @@ router.post('/login',
 		failureFlash: true,
 	}),
 	function(req, res) {
-		dashboard = '/' + req.user.name + '/dashboard';
+		dashboard = '/' + req.user.passCode + '/dashboard';
 		res.redirect('/logintuto/users' + dashboard);
 	}
 );
 
-// logoutensureAuthenticated
 router.get('/logout', (req, res) => {
 	req.logout();
 	req.flash('success_msg', "You've successfully logged out.");
 	res.redirect('/logintuto/users/login');
 });
 
-router.get('/:userName/dashboard', ensureAuthenticated, (req, res) => {
+router.get('/:passCode/dashboard', ensureAuthenticated, (req, res) => {
+	// here is defined the variable name used in the dashboard.ejs
+	// in this case variable named game would be more representing than user
 	res.render('dashboard', {
 		user: req.user
 	});
 });
 
 // delete account
-router.post('/:userName/dashboard', ensureAuthenticated, async function(req, res) {
+// :passCode comes from a form in dashboard.ejs. The variable is user.passCode.
+router.post('/:passCode/dashboard', ensureAuthenticated, async function(req, res) {
 	try {
 		const { email } = req.body;
 		await User.destroy({ where: { email: email } });

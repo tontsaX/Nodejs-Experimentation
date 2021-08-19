@@ -11,8 +11,9 @@
 </form>
 
 <!-- Piilota tämä ja näytä, kun pelikoodi on luotu. -->
+<!-- If gamecode is not undefined show gamecode, else show nothing as gamecode. -->
 <p>
-	Your gamecode is <%= gamecode %>
+	Your gamecode is <%= typeof gamecode != 'undefined' ? gamecode : '' %>
 	<a href="pelin osoite">Start the game.</a>
 </p>
 
