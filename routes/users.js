@@ -72,9 +72,16 @@ router.post('/login',
 	}
 );
 
-router.get('/logout', (req, res) => {
-	let gamecode = req.user.passCode;
-	console.log("Current game logout: " + gamecode);
+router.get('/logout', async (req, res) => {
+	try {
+		let gamecode = req.user.passCode;
+		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
+		game.players--;
+		await game.save();
+	} catch (err) {
+		console.log("Player reduction failed.");
+		console.log(err);
+	}
 	req.logout(); // node "passport exposes logout() function on req" object
 	req.flash('success_msg', "You've successfully logged out.");
 	res.redirect('/logintuto/users/login');
