@@ -1,7 +1,5 @@
-// ladataan user model käyttöön
 const express = require('express');
 const router = express.Router();
-//const User = require('../db/models').User;
 const GameOfUr = require('../db/models').GameOfUr;
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -23,18 +21,27 @@ router.get('/register', (req, res) => {
 // kun käyttäjä painaa nappia, niin tämä ohjataan peliin
 // Register handle
 router.post('/register', async function(req, res) {
-	//	const { name, email, password, password2 } = req.body;
-	const { gamecode } = req.body;
+	// req.body looks for a field named gamecode in register.ejs and puts the result here
+	// right now value found would be empty
+	//	const { gamecode } = req.body;
 	let errors = [];
 
 	try {
-		let gameCode = bcrypt.hashSync("GameofUr", 10);
+		let gameCode = bcrypt.hashSync("GameofUr", 2);
+
+		// We don't want to have slashes in our code, because the browser would navigate to a page, that doesn't exists.
+		// If the hashed string would be a password, this would NOT be a correct procedure to handle cryption.
+		if (gameCode.includes("\/")) {
+			console.log("There's a slash!");
+			gameCode = gameCode.replace(/\//g, "-");
+		}
+
 		let gameExists = await GameOfUr.findOne({ where: { passCode: gameCode } });
 
 		console.log("Gamecode: " + gameCode);
 
 		if (gameExists) {
-			// ohjaa takaisin rekisteröinti-sivulle ja kerro, että koodi täytyy luoda uudestaan
+			// Render the gamecode generation page and ask the user to generate a gamecode again.
 			errors.push({ msg: "Couldn't generate gamecode. Please try again." });
 			res.render('register', { errors });
 		}
@@ -47,6 +54,7 @@ router.post('/register', async function(req, res) {
 			req.flash('success_msg', 'Your game has been created!');
 			res.render('register', { gamecode: gameCode });
 		}
+
 	} catch (err) {
 		errors.push({ msg: "Something happened. Couldn't generate gamecode." });
 		console.log(err);
@@ -66,25 +74,26 @@ router.post('/login',
 );
 
 router.get('/logout', (req, res) => {
-	req.logout();
+	req.logout(); // node "passport exposes logout() function on req" object
 	req.flash('success_msg', "You've successfully logged out.");
 	res.redirect('/logintuto/users/login');
 });
 
+// game dashboard
+// change navigation so that the user goes straight to the game. there's nothing more in the genertated game
 router.get('/:passCode/dashboard', ensureAuthenticated, (req, res) => {
-	// here is defined the variable name used in the dashboard.ejs
-	// in this case variable named game would be more representing than user
+	// Here is defined the variable name used in the dashboard.ejs.
 	res.render('dashboard', {
-		user: req.user
+		game: req.user
 	});
 });
 
-// delete account
-// :passCode comes from a form in dashboard.ejs. The variable is user.passCode.
+// delete game
+// The path variable :passCode comes from a form in dashboard.ejs. The variable is user.passCode.
 router.post('/:passCode/dashboard', ensureAuthenticated, async function(req, res) {
 	try {
-		const { email } = req.body;
-		await User.destroy({ where: { email: email } });
+		const { gamecode } = req.body;
+		await GameOfUr.destroy({ where: { passCode: gamecode } });
 		req.flash('success_msg', 'Account deleted.');
 	} catch (err) {
 		console.log(err);
