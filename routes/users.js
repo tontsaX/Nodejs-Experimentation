@@ -25,19 +25,23 @@ router.post('/register', async function(req, res) {
 	// right now value found would be empty
 	//	const { gamecode } = req.body;
 	let errors = [];
+	var game;
 
 	try {
-		let newGamecode = bcrypt.hashSync("GameofUr", 2);
+		let newGamecode = bcrypt.hashSync("GameofUr", 10);
 
 		// We don't want to have slashes in our code, because the browser would navigate to a page, that doesn't exists.
 		// If the hashed string would be a password, this would NOT be a correct procedure to handle cryption.
+		// What we could do instead of this is to generate a random string and then hash it and save.
+		// Then we can use the generated random string as a gamecode and the database isn't compromised.
+
+		// Jos pelikoodit halutaan kryptata tietokannassa, niin niiden pariksi tarvitaan käyttäjänimi
+		// yhden koodin jutussa voisi olla ponnahdusikkuna pelin luojalle kun joku kirjautuu käyttäen pelikoodia
 		if (newGamecode.includes("\/")) {
 			newGamecode = newGamecode.replace(/\//g, "-");
 		}
 
 		let gameExists = await GameOfUr.findOne({ where: { passCode: newGamecode } });
-
-		console.log("Gamecode: " + newGamecode);
 
 		if (gameExists) {
 			// Render the gamecode generation page and ask the user to generate a gamecode again.
@@ -45,15 +49,22 @@ router.post('/register', async function(req, res) {
 			res.render('register', { errors });
 		}
 		else { // If game with a generated gamecode doesn't exist, create a new game.
-			await GameOfUr.create({
+			game = await GameOfUr.create({
 				passCode: newGamecode,
-				players: 1
+				players: 0
+			});
+			
+			// login() function is exposed on req object by passport and can be used
+			// to redirect registered user to user page
+			req.login(game, function(err) {
+				if (err) { res.render('register', { gamecode: newGamecode }); }
+				dashboard = '/' + game.passCode + '/dashboard';
+				res.redirect('/logintuto/users' + dashboard);
 			});
 
-			req.flash('success_msg', 'Your game has been created!');
-			res.render('register', { gamecode: newGamecode });
+			//			req.flash('success_msg', 'Your game has been created!');
+			//			res.render('register', { gamecode: newGamecode });
 		}
-
 	} catch (err) {
 		errors.push({ msg: "Something happened. Couldn't generate gamecode." });
 		console.log(err);
@@ -72,16 +83,25 @@ router.post('/login',
 	}
 );
 
-router.get('/logout', async (req, res) => {
+router.get('/logout', async function(req, res) {
 	try {
 		let gamecode = req.user.passCode;
 		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
+
 		game.players--;
-		await game.save();
+
+		if (game.players <= 0) {
+			await game.destroy();
+		}
+		else {
+			await game.save();
+		}
+
 	} catch (err) {
 		console.log("Player reduction failed.");
 		console.log(err);
 	}
+
 	req.logout(); // node "passport exposes logout() function on req" object
 	req.flash('success_msg', "You've successfully logged out.");
 	res.redirect('/logintuto/users/login');

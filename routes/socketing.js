@@ -19,7 +19,7 @@ const serverExport = require('../config/server');
 const io = socketio(serverExport.server);
 
 function createSocketConnection(username) {
-    // was io.on, but it caused message duplication problems when
+    // Was io.on, but it caused message duplication problems when
     // client makes request to /chatroom-:chatName
     // works, if not used as a function
     // any and every request to /chatroom-:chatName added a new client as
