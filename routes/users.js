@@ -27,32 +27,31 @@ router.post('/register', async function(req, res) {
 	let errors = [];
 
 	try {
-		let gameCode = bcrypt.hashSync("GameofUr", 2);
+		let newGamecode = bcrypt.hashSync("GameofUr", 2);
 
 		// We don't want to have slashes in our code, because the browser would navigate to a page, that doesn't exists.
 		// If the hashed string would be a password, this would NOT be a correct procedure to handle cryption.
-		if (gameCode.includes("\/")) {
-			console.log("There's a slash!");
-			gameCode = gameCode.replace(/\//g, "-");
+		if (newGamecode.includes("\/")) {
+			newGamecode = newGamecode.replace(/\//g, "-");
 		}
 
-		let gameExists = await GameOfUr.findOne({ where: { passCode: gameCode } });
+		let gameExists = await GameOfUr.findOne({ where: { passCode: newGamecode } });
 
-		console.log("Gamecode: " + gameCode);
+		console.log("Gamecode: " + newGamecode);
 
 		if (gameExists) {
 			// Render the gamecode generation page and ask the user to generate a gamecode again.
 			errors.push({ msg: "Couldn't generate gamecode. Please try again." });
 			res.render('register', { errors });
 		}
-		else {
-			user = await GameOfUr.create({
-				passCode: gameCode,
+		else { // If game with a generated gamecode doesn't exist, create a new game.
+			await GameOfUr.create({
+				passCode: newGamecode,
 				players: 1
 			});
 
 			req.flash('success_msg', 'Your game has been created!');
-			res.render('register', { gamecode: gameCode });
+			res.render('register', { gamecode: newGamecode });
 		}
 
 	} catch (err) {
@@ -74,6 +73,8 @@ router.post('/login',
 );
 
 router.get('/logout', (req, res) => {
+	let gamecode = req.user.passCode;
+	console.log("Current game logout: " + gamecode);
 	req.logout(); // node "passport exposes logout() function on req" object
 	req.flash('success_msg', "You've successfully logged out.");
 	res.redirect('/logintuto/users/login');
