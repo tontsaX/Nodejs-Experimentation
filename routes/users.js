@@ -28,17 +28,18 @@ router.post('/register', async function(req, res) {
 
 	try {
 		let gameCode = bcypt.hashSync("GameofUr", 10);
-		let gameExists = await GameOfUr.findOne({ where: { passCode: email } });
+		let gameExists = await GameOfUr.findOne({ where: { passCode: gameCode } });
 
 		if (gameExists) {
 			// ohjaa takaisin rekisteröinti-sivulle ja kerro, että koodi täytyy luoda uudestaan
-			res.render('register');
+			errors.push({ msg: "Couldn't generate gamecode. Please try again." });
+			res.render('register', { errors } );
 		}
 		else {
-			
+
 			req.flash('success_msg', 'You have now registered!');
-//			res.redirect('/logintuto/users/register');
-			res.render('register');
+			//			res.redirect('/logintuto/users/register');
+			res.render('register', { gamecode: gamecode });
 		}
 		//		var hash = bcrypt.hashSync(password, 10);
 		//		user = await User.create({
@@ -48,7 +49,7 @@ router.post('/register', async function(req, res) {
 		//		});
 	} catch (err) {
 		errors.push({ msg: "Something happened. Couldn't generate gamecode." });
-//				res.render('register', { errors, name, email, password, password2 });
+		res.render('register', { errors });
 	}
 });
 
