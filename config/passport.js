@@ -5,6 +5,7 @@ const GameOfUr = require("../db/models").GameOfUr;
 
 module.exports = function(passport) {
     passport.use(new LocalStrategy({
+		// These fields are in login.ejs
         usernameField: 'game',
         passwordField: 'gamecode'
     },

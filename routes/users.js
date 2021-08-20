@@ -21,9 +21,6 @@ router.get('/register', (req, res) => {
 // kun käyttäjä painaa nappia, niin tämä ohjataan peliin
 // Register handle
 router.post('/register', async function(req, res) {
-	// req.body looks for a field named gamecode in register.ejs and puts the result here
-	// right now value found would be empty
-	//	const { gamecode } = req.body;
 	let errors = [];
 	var game;
 
@@ -58,12 +55,9 @@ router.post('/register', async function(req, res) {
 			// to redirect registered user to user page
 			req.login(game, function(err) {
 				if (err) { res.render('register', { gamecode: newGamecode }); }
-				dashboard = '/' + game.passCode + '/dashboard';
-				res.redirect('/logintuto/users' + dashboard);
+				gameroom = '/gameofur-' + game.passCode;
+				res.redirect(gameroom);
 			});
-
-			//			req.flash('success_msg', 'Your game has been created!');
-			//			res.render('register', { gamecode: newGamecode });
 		}
 	} catch (err) {
 		errors.push({ msg: "Something happened. Couldn't generate gamecode." });
