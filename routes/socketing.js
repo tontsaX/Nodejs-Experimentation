@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 	
 });
 
-router.get('/chatroom-:chatName', ensureAuthenticated, (req, res) => {
+router.get('/chatroom-:chatName', ensureAuthenticated, function(req, res) {
     createSocketConnection(req.user.userName);
     res.render('chatroom', {
 		user: req.user,
