@@ -3,7 +3,6 @@ const router = express.Router();
 const GameOfUr = require('../db/models').GameOfUr;
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { ensureAuthenticated } = require("../config/auth");
 
 router.get('/login', (req, res) => {
 	res.render('login');
@@ -21,8 +20,9 @@ router.post('/register', async function(req, res) {
 	try {
 		let newGamecode = bcrypt.hashSync("GameofUr", 2);
 
-		// We don't want to have slashes in our code, because the browser would navigate to a page, that doesn't exists.
+		// We don't want to have slashes in our gamecode (used as address to navigate to a game), because the browser would navigate to a page, that doesn't exists.
 		// If the hashed string would be used as a password with an account, this would NOT be a correct procedure to handle password storing.
+		// And further more, you absolutely do NOT put passwords in an address.
 		if (newGamecode.includes("\/")) {
 			newGamecode = newGamecode.replace(/\//g, "-");
 		}
@@ -30,11 +30,10 @@ router.post('/register', async function(req, res) {
 		let gameExists = await GameOfUr.findOne({ where: { passCode: newGamecode } });
 
 		if (gameExists) {
-			// Render the gamecode generation page and ask the user to generate a gamecode again.
 			errors.push({ msg: "Couldn't generate gamecode. Please try again." });
 			res.render('register', { errors });
 		}
-		else { // Create a new game.
+		else {
 			game = await GameOfUr.create({
 				passCode: newGamecode,
 				players: 0
