@@ -117,28 +117,4 @@ router.post('/logout', async function(req, res) {
 	req.logout();
 });
 
-// game dashboard
-// change navigation so that the user goes straight to the game. there's nothing more in the generated game
-router.get('/:passCode/dashboard', ensureAuthenticated, (req, res) => {
-	// Here is defined the variable name used in the dashboard.ejs.
-	res.render('dashboard', {
-		game: req.user
-	});
-});
-
-// delete game
-// The path variable :passCode comes from a form in dashboard.ejs. The variable is user.passCode.
-router.post('/:passCode/dashboard', ensureAuthenticated, async function(req, res) {
-	try {
-		const { gamecode } = req.body;
-		await GameOfUr.destroy({ where: { passCode: gamecode } });
-		req.flash('success_msg', 'Account deleted.');
-	} catch (err) {
-		console.log(err);
-		req.flash('error_msg', 'Resource not deleted.')
-		req.logout();
-	}
-	res.redirect('/logintuto/users/login');
-});
-
 module.exports = router;
