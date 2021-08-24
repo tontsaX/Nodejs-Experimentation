@@ -25,7 +25,7 @@ router.get('/gameofur-:gamecode', async function(req, res) {
 				
 				createSocketConnection(generatePlayername(game.players));
 				
-				res.render('chatroom', {
+				res.render('gameroom', {
 					game: req.user,
 					playername: playername
 				});
@@ -60,26 +60,26 @@ function createSocketConnection(playername) {
 	// any and every request to /chatroom-:chatName added a new client as
 	// the same client, which lead multiplication of messages
 	io.once('connection', socket => {
-		var chatroom = '';
+		var gameroom = '';
 
-		socket.on('chatroom', function(data) {
-			socket.join(data.chatroom);
-			chatroom = data.chatroom;
+		socket.on('gameroom', function(data) {
+			socket.join(data.gameroom);
+			gameroom = data.gameroom;
 		});
 
 		console.log("New user connected.")
-		console.log("Chatroom: " + chatroom);
+		console.log("Gameroom: " + gameroom);
 		console.log("=============");
 
 		// message received from the client
 		socket.on('new_message', function(data) {
 			console.log("new message");
-			io.to(chatroom).emit('receive_message', { message: data.message, username: data.username });
+			io.to(gameroom).emit('receive_message', { message: data.message, playername: data.playername });
 		});
 
 		socket.on('typing', function(data) {
 			// "When we use broadcast, every user except the one who is typing the message receives the typing event from the server."
-			socket.to(chatroom).broadcast.emit('typing', { username: playername });
+			socket.to(gameroom).broadcast.emit('typing', { playername: playername });
 		});
 	})
 

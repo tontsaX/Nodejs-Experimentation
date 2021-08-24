@@ -10,7 +10,7 @@
 	<div class="card">
 		<div class="card-header">
 <!-- 			Defines the username used in client chatroom.js -->
-			<p id="username"><%= playername %></p>
+			<p id="playername"><%= playername %></p>
 		</div>
 	</div>
 
@@ -39,7 +39,7 @@
 
 <!-- Initialize ejs variables for the external js -->
 <script>
-	const chatroom = '<%= game.passCode %>';
+	const gameroom = '<%= game.passCode %>';
 </script>
-<script type="text/javascript" src="/js/chatroom.js"></script>
+<script type="text/javascript" src="/js/gameroom.js"></script>
 <script type="text/javascript" src="/js/logout.js"></script>
