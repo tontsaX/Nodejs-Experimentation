@@ -2,27 +2,32 @@ const express = require('express');
 const router = express.Router();
 const socketio = require('socket.io');
 const GameOfUr = require('../db/models').GameOfUr;
-const { ensureAuthenticated } = require("../config/auth");
+//const { ensureAuthenticated } = require("../config/auth");
 
-router.get('/', (req, res) => {
-
-});
-
-router.get('/gameofur-:chatName', async function(req, res) {
+// needs to be moved to where other route definitions are
+router.get('/gameofur-:gamecode', async function(req, res) {
 	let errors = [];
 
 	try {
-		let game = await GameOfUr.findOne({ where: { passCode: req.params.chatName } });
+		let game = await GameOfUr.findOne({ where: { passCode: req.params.gamecode } });
 
 		if (game && game.players < 2) {
 			game.players++;
 			game.save();
+
 			req.login(game, function(err) {
-				console.log(err);
-				createSocketConnection(req.user.userName);
+				if(err) { 
+					console.log("Login error msg: " + err);
+					res.redirect('/logintuto/users/register'); 
+				}
+				
+				let playername = generatePlayername(game.players);
+				
+				createSocketConnection(generatePlayername(game.players));
+				
 				res.render('chatroom', {
-					user: req.user,
-					chatroom: req.params.chatName
+					game: req.user,
+					playername: playername
 				});
 			});
 		}
@@ -37,10 +42,18 @@ router.get('/gameofur-:chatName', async function(req, res) {
 	}
 });
 
+function generatePlayername(playerCount) {
+	switch(playerCount) {
+		case 1: return "Uruk";
+		case 2: return "Akkad";
+	}
+}
+
+// socketing stuff
 const serverExport = require('../config/server');
 const io = socketio(serverExport.server);
 
-function createSocketConnection(username) {
+function createSocketConnection(playername) {
 	// Was io.on, but it caused message duplication problems when
 	// client makes request to /chatroom-:chatName
 	// works, if not used as a function
@@ -49,7 +62,7 @@ function createSocketConnection(username) {
 	io.once('connection', socket => {
 		var chatroom = '';
 
-		socket.on('chatroom', data => {
+		socket.on('chatroom', function(data) {
 			socket.join(data.chatroom);
 			chatroom = data.chatroom;
 		});
@@ -59,14 +72,14 @@ function createSocketConnection(username) {
 		console.log("=============");
 
 		// message received from the client
-		socket.on('new_message', data => {
+		socket.on('new_message', function(data) {
 			console.log("new message");
 			io.to(chatroom).emit('receive_message', { message: data.message, username: data.username });
 		});
 
-		socket.on('typing', data => {
-			/*"When we use broadcast, every user except the one who is typing the message receives the typing event from the server."*/
-			socket.to(chatroom).broadcast.emit('typing', { username: username });
+		socket.on('typing', function(data) {
+			// "When we use broadcast, every user except the one who is typing the message receives the typing event from the server."
+			socket.to(chatroom).broadcast.emit('typing', { username: playername });
 		});
 	})
 

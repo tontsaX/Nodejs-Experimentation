@@ -1,50 +1,45 @@
 <head></head>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <div class="container">
 	<div class="title">
-		<h3>Realtime Chat Room</h3>
+		<h3>Game <%= game.passCode %></h3>
 		<a href="/logintuto/users/logout">Logout</a>
 	</div>
-       
-    <div class="card">
-    	<div class="card-header">
-    		<p id="username"><%= user.userName %><p>
-    	</div>
-    </div>
-    	
-    	<!--
-        <div class="card-body">
-        	<div class="input-group">
-            	<input type="text" class="form-control" id="username" placeholder="Change your username" >
-            	<div class="input-group-append">
-                	<button class="btn btn-warning" type="button" id="usernameBtn">Change</button>
-            	</div>
-            </div>
-    	</div>
-		-->
-            
-	    <div class="message-box">
-	    	<ul class="list-group list-group-flush" id="message-list"></ul>
-	        <div class="info"></div>
-	    </div>
-            
-	   	<div class="card-footer">
-	    	<div class="input-group">
-	        	<input type="text" class="form-control" id="message" placeholder="Send new message" >
-	        	<div class="input-group-append">
-	            	<button class="btn btn-success" type="button" id="messageBtn">Send</button>
-	            </div>
-	        </div>
+
+	<div class="card">
+		<div class="card-header">
+<!-- 			Defines the username used in client chatroom.js -->
+			<p id="username"><%= playername %></p>
 		</div>
-	
+	</div>
+
+	<div class="message-box">
+		<ul class="list-group list-group-flush" id="message-list"></ul>
+		<div class="info"></div>
+	</div>
+
+	<div class="card-footer">
+		<div class="input-group">
+			<input type="text" class="form-control" id="message"
+				placeholder="Send new message">
+			<div class="input-group-append">
+				<button class="btn btn-success" type="button" id="messageBtn">Send</button>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 <%- include('../public/images/royalgameofur/the-game-of-ur') %>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
 <!-- Use the one which is installed -->
 <!--<script src="/socket.io/socket.io.js"></script> -->
 
 <!-- Initialize ejs variables for the external js -->
-<script> const chatroom = '<%= chatroom %>'; </script>
-<script src="/js/chatroom.js"></script>
+<script>
+	const chatroom = '<%= game.passCode %>';
+</script>
+<script type="text/javascript" src="/js/chatroom.js"></script>
+<script type="text/javascript" src="/js/logout.js"></script>

@@ -1,3 +1,6 @@
+// Immediately Invoked Function Expression (IIFE) or Self Executing Anonymous Function
+// The function connect() is invoked when the file is loaded.
+// With this you can control function visibility. It's a closure.
 (function connect(){
     let socket = io.connect('/');
     let username = document.querySelector('#username').innerHTML;
@@ -6,6 +9,7 @@
     let messageBtn = document.querySelector('#messageBtn');
     let messageList = document.querySelector('#message-list');
 
+	// chatroom is defined in chatroom.ejs
 	console.log(chatroom);
 	socket.emit('chatroom', {chatroom: chatroom});
     
@@ -34,4 +38,4 @@
         info.textContent = data.username + " is typing..."
         setTimeout(() => {info.textContent=''}, 5000);
     });
-})()
+})();
