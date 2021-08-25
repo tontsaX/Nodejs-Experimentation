@@ -8,8 +8,8 @@ My idea is to make a page where two players can play the Royal Game of Ur in rea
 [Link to play classic worm game.](https://ancient-caverns-95141.herokuapp.com/worm-game "Classic Worm Game")
 
 Tech used:
-   EJS           <https://ejs.co/>
-   Express       <https://expressjs.com/>
-   Passport.js   <http://www.passportjs.org/>
-   Sequalize     <https://sequelize.org/>
-   Socket.IO     <https://socket.io/>
+<br>EJS           <https://ejs.co/>
+<br>Express       <https://expressjs.com/>
+<br>Passport.js   <http://www.passportjs.org/>
+<br>Sequalize     <https://sequelize.org/>
+<br>Socket.IO     <https://socket.io/>
