@@ -4,6 +4,7 @@ My dive into Node.js and experimenting with the framework.
 My idea is to make a page where two players can play the Royal Game of Ur in real time. 
 
 [Link to start a game of Game of Ur on my Heroku page.](https://ancient-caverns-95141.herokuapp.com/game-of-ur "Game of Ur")
+<br>No gameplay yet.
 
 [Link to play classic worm game.](https://ancient-caverns-95141.herokuapp.com/worm-game "Classic Worm Game")
 
