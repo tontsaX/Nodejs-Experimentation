@@ -106,7 +106,7 @@ router.post('/logout', async function(req, res) {
 	req.logout();
 });
 
-function logoutActions(req, res) {
+async function logoutActions(req, res) {
 	try {
 		let gamecode = req.user.passCode;
 		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
