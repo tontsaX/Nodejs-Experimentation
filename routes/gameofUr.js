@@ -53,23 +53,24 @@ router.post('/create-game', async function(req, res) {
 
 router.get('/logout', async function(req, res) {
 	// null-juttuja
-	try {
-		let gamecode = req.user.passCode;
-		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
-		
-		game.players--;
-
-		if (game.players <= 0) {
-			await game.destroy();
-		}
-		else {
-			await game.save();
-		}
-		
-	} catch (err) {
-		console.log("Player reduction failed.");
-		console.log(err);
-	}
+	logoutActions(req, res);
+//	try {
+//		let gamecode = req.user.passCode;
+//		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
+//		
+//		game.players--;
+//
+//		if (game.players <= 0) {
+//			await game.destroy();
+//		}
+//		else {
+//			await game.save();
+//		}
+//		
+//	} catch (err) {
+//		console.log("Player reduction failed.");
+//		console.log(err);
+//	}
 
 	console.log("Logout ready.");
 
@@ -83,6 +84,29 @@ router.post('/logout', async function(req, res) {
 	// need to make a query function
 	// this try-cactch-clause is used the same way many times
 	// null-juttuja
+	logoutActions(req, res);
+//	try {
+//		let gamecode = req.user.passCode;
+//		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
+//
+//		game.players--;
+//
+//		if (game.players <= 0) {
+//			await game.destroy();
+//		}
+//		else {
+//			await game.save();
+//		}
+//
+//	} catch (err) {
+//		console.log("Player reduction failed.");
+//		console.log(err);
+//	}
+
+	req.logout();
+});
+
+function logoutActions(req, res) {
 	try {
 		let gamecode = req.user.passCode;
 		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
@@ -100,9 +124,7 @@ router.post('/logout', async function(req, res) {
 		console.log("Player reduction failed.");
 		console.log(err);
 	}
-
-	req.logout();
-});
+}
 
 // there is no way to check if a player refreshes their page
 // resfresh redirects the player to be the second player or out of the site
