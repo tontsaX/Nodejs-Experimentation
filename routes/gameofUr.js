@@ -104,6 +104,8 @@ router.post('/logout', async function(req, res) {
 	req.logout();
 });
 
+// there is no way to check if a player refreshes their page
+// resfresh redirects the player to be the second player or out of the site
 router.get('/:gamecode', async function(req, res) {
 	let errors = [];
 
@@ -132,15 +134,17 @@ router.get('/:gamecode', async function(req, res) {
 		}
 		else {
 			errors.push({ msg: "You need to generate a game before playing." });
-			res.redirect('/game-of-ur', { errors: errors });
+			res.redirect('/game-of-ur');
 		}
 	} catch (err) {
 		console.log(err);
 		errors.push({ msg: "You need to generate a game before playing." });
-		res.redirect('/game-of-ur', { errors: errors });
+		res.redirect('/game-of-ur');
 	}
 });
 
+// need to have a way to check player name.
+// now it changes when page is refreshed
 function generatePlayername(playerCount) {
 	switch (playerCount) {
 		case 1: return "Uruk";
