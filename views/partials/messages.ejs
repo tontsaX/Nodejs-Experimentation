@@ -1,16 +1,18 @@
 <% if(typeof errors!= 'undefined') { %>
-<%    errors.forEach(function(error){ %>
-<p> <%= error.msg %></p>
-<%    })        %>
+	<% errors.forEach(function(error){ %>
+		<p><%= error.msg %></p>
+	<% }) %>
 <% } %>
 
+<!-- flash messages, probably could remove these -->
 <% if(success_msg!= '') { %>
-<p><%=success_msg %></p>
+	<p><%=success_msg %></p>
 <% } %>
 
 <% if(error_msg != '') { %>
     <%=error_msg%>
 <% } %>
+
 <% if(error != '') { %>
     <%=error%>
 <% } %>

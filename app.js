@@ -39,6 +39,5 @@ app.use((req,res,next) => {
 
 // Routes
 app.use('/', require('./routes/index'));
-//app.use('/', require('./routes/baseRoutes'));
 app.use('/game-of-ur', require('./routes/gameofUr'));
-app.use('/', require('./routes/wormGame'));
+app.use('/worm-game', require('./routes/wormGame'));

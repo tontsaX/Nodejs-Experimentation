@@ -36,7 +36,7 @@ router.post('/create-game', async function(req, res) {
 				passCode: newGamecode,
 				players: 0
 			});
-			
+
 			// The login() function is exposed on req object by passport and can be used to redirect registered user to user page. -passportjs.org
 			req.login(game, function(err) {
 				if (err) { res.render('createGameofUr', { gamecode: newGamecode }); }
@@ -52,10 +52,11 @@ router.post('/create-game', async function(req, res) {
 });
 
 router.get('/logout', async function(req, res) {
+	// null-juttuja
 	try {
 		let gamecode = req.user.passCode;
 		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
-
+		
 		game.players--;
 
 		if (game.players <= 0) {
@@ -64,18 +65,16 @@ router.get('/logout', async function(req, res) {
 		else {
 			await game.save();
 		}
-
+		
 	} catch (err) {
 		console.log("Player reduction failed.");
 		console.log(err);
 	}
-	
+
 	console.log("Logout ready.");
-	
+
 	req.logout();
 	res.redirect('/game-of-ur');
-//	req.flash('success_msg', "You've successfully logged out.");
-//	res.redirect('/login');
 });
 
 // Works with navigator object.
@@ -83,10 +82,11 @@ router.get('/logout', async function(req, res) {
 router.post('/logout', async function(req, res) {
 	// need to make a query function
 	// this try-cactch-clause is used the same way many times
+	// null-juttuja
 	try {
 		let gamecode = req.user.passCode;
 		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
-	
+
 		game.players--;
 
 		if (game.players <= 0) {
@@ -110,20 +110,20 @@ router.get('/:gamecode', async function(req, res) {
 	try {
 		let game = await GameOfUr.findOne({ where: { passCode: req.params.gamecode } });
 
-		if (game && game.players < 2) {
+		if (game != null && game.players < 2) {
 			game.players++;
 			game.save();
 
 			req.login(game, function(err) {
-				if(err) { 
+				if (err) {
 					console.log("Login error msg: " + err);
-					res.redirect('/game-of-ur'); 
+					res.redirect('/game-of-ur');
 				}
-				
+
 				let playername = generatePlayername(game.players);
-				
+
 				createSocketConnection(generatePlayername(game.players));
-				
+
 				res.render('gameroom', {
 					game: req.user,
 					playername: playername
@@ -132,17 +132,17 @@ router.get('/:gamecode', async function(req, res) {
 		}
 		else {
 			errors.push({ msg: "You need to generate a game before playing." });
-			res.redirect('/game-of-ur');
+			res.redirect('/game-of-ur', { errors: errors });
 		}
 	} catch (err) {
 		console.log(err);
 		errors.push({ msg: "You need to generate a game before playing." });
-		res.redirect('/game-of-ur');
+		res.redirect('/game-of-ur', { errors: errors });
 	}
 });
 
 function generatePlayername(playerCount) {
-	switch(playerCount) {
+	switch (playerCount) {
 		case 1: return "Uruk";
 		case 2: return "Akkad";
 	}
@@ -166,9 +166,9 @@ function createSocketConnection(playername) {
 			gameroom = data.gameroom;
 		});
 
-//		console.log("New user connected.")
-//		console.log("Gameroom: " + gameroom);
-//		console.log("=============");
+		//		console.log("New user connected.")
+		//		console.log("Gameroom: " + gameroom);
+		//		console.log("=============");
 
 		// message received from the client
 		socket.on('new_message', function(data) {
