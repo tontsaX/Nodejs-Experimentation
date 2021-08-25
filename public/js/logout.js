@@ -3,7 +3,7 @@
 // With this you can control function visibility. It's a closure.
 (function logoutAfterClosingWindow() {
 	window.addEventListener('beforeunload', function(event) {
-		navigator.sendBeacon("/logintuto/users/logout");
+		navigator.sendBeacon("/game-of-ur/logout");
 		event.returnValue = ''; // Some browsers may require event to return a string. -MDN Web Docs
 	});
 })();

@@ -38,8 +38,7 @@ app.use((req,res,next) => {
 });
 
 // Routes
-app.use('/logintuto', require('./routes/index'));
-app.use('/logintuto/users', require('./routes/users'));
-//app.use('/chathall', require('./routes/socketing'));
-app.use('/', require('./routes/socketing'));
-app.use('/wormGame', require('./routes/wormGame'));
+app.use('/', require('./routes/index'));
+//app.use('/', require('./routes/baseRoutes'));
+app.use('/game-of-ur', require('./routes/gameofUr'));
+app.use('/', require('./routes/wormGame'));

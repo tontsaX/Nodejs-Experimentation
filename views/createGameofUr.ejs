@@ -1,0 +1,11 @@
+<h1>Start A Game of Ur</h1>
+<p>
+	Press the 'Generate gamecode' button to create a new game of Game of Ur
+	and share the code with your friend. <br>There can be two players
+	in one game.
+</p>
+
+<%- include('./partials/messages') %>
+<form action="/game-of-ur/create-game" method="POST">
+	<button type="Submit">Play game</button>
+</form>
