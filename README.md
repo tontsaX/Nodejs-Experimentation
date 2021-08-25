@@ -7,6 +7,8 @@ My idea is to make a page where two players can play the Royal Game of Ur in rea
 
 [Link to play classic worm game.](https://ancient-caverns-95141.herokuapp.com/worm-game "Classic Worm Game")
 
+---
+
 Tech used:
 <br>EJS           <https://ejs.co/>
 <br>Express       <https://expressjs.com/>
