@@ -1,10 +1,16 @@
+//const serverExport = require('../config/server');
+const server = require('../config/server').server;
+
 const express = require('express');
 const router = express.Router();
+
 const GameOfUr = require('../db/models').GameOfUr;
+
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+
 const socketio = require('socket.io');
-//const { ensureAuthenticated } = require("../config/auth");
+const io = socketio(server);
 
 router.get('/', (req, res) => {
 	res.render('createGameofUr');
@@ -52,64 +58,32 @@ router.post('/create-game', async function(req, res) {
 });
 
 router.get('/logout', async function(req, res) {
-	// null-juttuja
 	logoutActions(req, res);
-//	try {
-//		let gamecode = req.user.passCode;
-//		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
-//		
-//		game.players--;
-//
-//		if (game.players <= 0) {
-//			await game.destroy();
-//		}
-//		else {
-//			await game.save();
-//		}
-//		
-//	} catch (err) {
-//		console.log("Player reduction failed.");
-//		console.log(err);
-//	}
-
-	console.log("Logout ready.");
 
 	req.logout();
 	res.redirect('/game-of-ur');
 });
 
-// Works with navigator object.
+// Navigator.sendBeacon() in the client script is a 'POST'-request.
 // Don't redirect to router.get('/logout'..). The logout with sendBeacon() won't happen then.
 router.post('/logout', async function(req, res) {
-	// need to make a query function
-	// this try-cactch-clause is used the same way many times
-	// null-juttuja
 	logoutActions(req, res);
-//	try {
-//		let gamecode = req.user.passCode;
-//		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
-//
-//		game.players--;
-//
-//		if (game.players <= 0) {
-//			await game.destroy();
-//		}
-//		else {
-//			await game.save();
-//		}
-//
-//	} catch (err) {
-//		console.log("Player reduction failed.");
-//		console.log(err);
-//	}
 
 	req.logout();
 });
 
 async function logoutActions(req, res) {
+	let logoutMessage = "";
+
 	try {
 		let gamecode = req.user.passCode;
 		let game = await GameOfUr.findOne({ where: { passCode: gamecode } });
+		
+		// This null check is to resolve double logout call asap.
+		if (game === null) {
+			logoutMessage = "Game was not found. Logout ready.";
+			return;
+		}
 
 		game.players--;
 
@@ -119,14 +93,18 @@ async function logoutActions(req, res) {
 		else {
 			await game.save();
 		}
+		
+		logoutMessage = "Logout ready.";
 
 	} catch (err) {
 		console.log("Player reduction failed.");
 		console.log(err);
+	} finally {
+		console.log(logoutMessage);
 	}
 }
 
-// there is no way to check if a player refreshes their page
+// there is no way yet in this app to check if a player refreshes their page
 // resfresh redirects the player to be the second player or out of the site
 router.get('/:gamecode', async function(req, res) {
 	let errors = [];
@@ -174,16 +152,9 @@ function generatePlayername(playerCount) {
 	}
 }
 
-// socketing stuff
-const serverExport = require('../config/server');
-const io = socketio(serverExport.server);
+// GAMEPLAY SOCKET HANDLING
 
 function createSocketConnection(playername) {
-	// Was io.on, but it caused message duplication problems when
-	// client makes request to /chatroom-:chatName
-	// works, if not used as a function
-	// any and every request to /chatroom-:chatName added a new client as
-	// the same client, which lead multiplication of messages
 	io.once('connection', socket => {
 		var gameroom = '';
 
@@ -192,11 +163,6 @@ function createSocketConnection(playername) {
 			gameroom = data.gameroom;
 		});
 
-		//		console.log("New user connected.")
-		//		console.log("Gameroom: " + gameroom);
-		//		console.log("=============");
-
-		// message received from the client
 		socket.on('new_message', function(data) {
 			console.log("new message");
 			io.to(gameroom).emit('receive_message', { message: data.message, playername: data.playername });
@@ -206,8 +172,7 @@ function createSocketConnection(playername) {
 			// "When we use broadcast, every user except the one who is typing the message receives the typing event from the server."
 			socket.to(gameroom).broadcast.emit('typing', { playername: playername });
 		});
-	})
-
+	});
 }
 
 module.exports = router;

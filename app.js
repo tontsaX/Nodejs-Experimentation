@@ -1,34 +1,24 @@
 const express = require('express');
+const app = require('./config/server').app;
+
 const expressEjsLayout = require('express-ejs-layouts');
-const appExport = require('./config/server');
-const app = appExport.app;
-
-const passport = require('passport');
-require("./config/passport")(passport);
-
-const flash = require('connect-flash');
-const session = require('express-session');
-
-// EJS
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(expressEjsLayout);
 
-// BodyParser
-app.use(express.urlencoded({extended: false}));
-
-// setting up express session
-app.use(session({
+const expressSession = require('express-session');
+app.use(expressSession({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
 
-// Authentication system
+const passport = require('passport');
+require("./config/passport")(passport);
 app.use(passport.initialize());
 app.use(passport.session({resave: false}));
 
-// flash-message stuff, not to be confused with the browser flash thing
+const flash = require('connect-flash');
 app.use(flash());
 app.use((req,res,next) => {
     res.locals.success_msg = req.flash('success_msg');
@@ -36,6 +26,9 @@ app.use((req,res,next) => {
     res.locals.error = req.flash('error');
     next();
 });
+
+// BodyParser
+app.use(express.urlencoded({extended: false}));
 
 // Routes
 app.use('/', require('./routes/index'));
