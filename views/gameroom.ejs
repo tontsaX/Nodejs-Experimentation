@@ -1,6 +1,10 @@
-<head></head>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/game-of-ur-style.css">
+</head>
+
+<%- include('./game-of-ur.ejs') %>
+
 <div class="container">
 	<div class="title">
 		<h3>Game <%= game.passCode %></h3>
@@ -9,7 +13,7 @@
 
 	<div class="card">
 		<div class="card-header">
-<!-- 			Defines the username used in client chatroom.js -->
+			<!-- 			Defines the username used in client chatroom.js -->
 			<p id="playername"><%= playername %></p>
 		</div>
 	</div>
@@ -31,15 +35,14 @@
 
 </div>
 
-<%- include('../public/images/royalgameofur/the-game-of-ur') %>
+<!-- <%- include('../public/images/royalgameofur/the-game-of-ur') %> -->
 
-<script	src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
-<!-- Use the one which is installed -->
-<!--<script src="/socket.io/socket.io.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
 
 <!-- Initialize ejs variables for the external js -->
 <script>
 	const gameroom = '<%= game.passCode %>';
 </script>
 <script type="text/javascript" src="/js/gameroom.js"></script>
+<script type="text/javascript" src="/js/game-of-ur-gameplay.js"></script>
 <script type="text/javascript" src="/js/logout.js"></script>

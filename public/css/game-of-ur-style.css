@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+#game-board {
+	position: relative;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+#game-board td {
+	position: relative;
+	background-color: #FFE7AB;
+	width: 90px;
+	height: 90px;
+	border: 5px solid #335B96;
+	justify-content: center;
+}
+
+#game-board td img {
+	margin: auto;
+	left: 0;
+	top: 0;
+}
+
+#game-board .out {
+	background-color: white;
+	border: none;
+}
+
+.booth-stats li {
+	display: inline;
+	padding-right: .6em;
+}
+
+.game-pieces {
+	list-style-type: none;
+	height: 50px;
+}
+
+.game-pieces li {
+	position: relative;
+	display: inline;
+	width: 50px;
+}
+
+.game-pieces li img {
+	margin: auto;
+	left: 0;
+	top: 0;
+	clip-path: circle(100%);
+	width: 50px;
+}
+
+.game-piece {
+	position: absolute;
+	z-index: 1;
+}
+
+.triangle-up {
+	width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-bottom: 15px solid #555;
+}
+
+.triangle-down {
+	width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 15px solid #555;
+}
+
+.triangle-right {
+	width: 0;
+	height: 0;
+	border-top: 20px solid transparent;
+	border-left: 15px solid #555;
+	border-bottom: 20px solid transparent;
+}
+
+.triangle-left {
+	width: 0;
+	height: 0;
+	border-top: 20px solid transparent;
+	border-right: 15px solid #555;
+	border-bottom: 20px solid transparent;
+}
+
+.align-right {
+	margin-left: auto;
+}
+
+#dice {
+	position: absolute;
+	right: 220px;
+	top: 300px;
+}
+
+#dice-btn {
+	color: white;
+	background-color: green;
+}
+
+/* #dice-value { */
+/* 	color: blue;	 */
+/* } */
