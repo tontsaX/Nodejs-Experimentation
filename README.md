@@ -1,4 +1,4 @@
-# Nodejs-Experimentation
+# Nodejs-Historic-Games
 My dive into Node.js and experimenting with the framework.
 
 My idea is to make a page where two players can play the Royal Game of Ur in real time. 
