@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+#worm-game {
+  height: 270px;
+  margin: auto;
+  padding: 10px;
+  width: 480px;
+}
+
+#game-board {
+  border: 1px solid black;
+  height: inherit;
+  width: inherit;
+}
