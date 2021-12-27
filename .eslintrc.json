@@ -1,0 +1,12 @@
+{
+  "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
+  "plugins": ["prettier"],
+  "env": { "browser": true, "node": true },
+  "rules": {
+    "no-console": "warn",
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "semi": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "object-shorthand": "error"
+  }
+}

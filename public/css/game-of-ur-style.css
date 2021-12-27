@@ -1,105 +1,104 @@
 @charset "UTF-8";
 
 #game-board {
-	position: relative;
-	border-collapse: collapse;
-	text-align: center;
+  position: relative;
+  border-collapse: collapse;
+  text-align: center;
 }
 
 #game-board td {
-	position: relative;
-	background-color: #FFE7AB;
-	width: 90px;
-	height: 90px;
-	border: 5px solid #335B96;
-	justify-content: center;
+  background-color: #ffe7ab;
+  border: 5px solid #335b96;
+  height: 90px;
+  justify-content: center;
+  position: relative;
+  width: 90px;
 }
 
 #game-board td img {
-	margin: auto;
-	left: 0;
-	top: 0;
+  left: 0;
+  margin: auto;
+  top: 0;
 }
 
 #game-board .out {
-	background-color: white;
-	border: none;
+  background-color: white;
+  border: none;
 }
 
 .booth-stats li {
-	display: inline;
-	padding-right: .6em;
+  display: inline;
+  padding-right: 0.6em;
 }
 
 .game-pieces {
-	list-style-type: none;
-	height: 50px;
+  height: 50px;
+  list-style-type: none;
 }
 
 .game-pieces li {
-	position: relative;
-	display: inline;
-	width: 50px;
+  display: inline;
+  position: relative;
 }
 
 .game-pieces li img {
-	margin: auto;
-	left: 0;
-	top: 0;
-	clip-path: circle(100%);
-	width: 50px;
+  clip-path: circle(100%);
+  left: 0;
+  margin: auto;
+  top: 0;
+  width: 50px;
 }
 
 .game-piece {
-	position: absolute;
-	z-index: 1;
+  position: absolute;
+  z-index: 1;
 }
 
 .triangle-up {
-	width: 0;
-	height: 0;
-	border-left: 20px solid transparent;
-	border-right: 20px solid transparent;
-	border-bottom: 15px solid #555;
+  border-bottom: 15px solid #555;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  height: 0;
+  width: 0;
 }
 
 .triangle-down {
-	width: 0;
-	height: 0;
-	border-left: 20px solid transparent;
-	border-right: 20px solid transparent;
-	border-top: 15px solid #555;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 15px solid #555;
+  height: 0;
+  width: 0;
 }
 
 .triangle-right {
-	width: 0;
-	height: 0;
-	border-top: 20px solid transparent;
-	border-left: 15px solid #555;
-	border-bottom: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 15px solid #555;
+  border-top: 20px solid transparent;
+  height: 0;
+  width: 0;
 }
 
 .triangle-left {
-	width: 0;
-	height: 0;
-	border-top: 20px solid transparent;
-	border-right: 15px solid #555;
-	border-bottom: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 15px solid #555;
+  border-top: 20px solid transparent;
+  height: 0;
+  width: 0;
 }
 
 .align-right {
-	margin-left: auto;
+  margin-left: auto;
 }
 
 #dice {
-	position: absolute;
-	right: 220px;
-	top: 300px;
+  position: absolute;
+  right: 220px;
+  top: 300px;
 }
 
 #dice-btn {
-	color: white;
-	background-color: green;
+  background-color: green;
+  color: white;
 }
 
 /* #dice-value { */
